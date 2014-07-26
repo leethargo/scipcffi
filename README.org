@@ -1,0 +1,2 @@
+* Python wrapper for SCIP using cffi
+built up step by step following [[http://cffi.readthedocs.org]].
