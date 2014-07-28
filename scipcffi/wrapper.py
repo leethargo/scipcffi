@@ -4,7 +4,7 @@ from scipcffi import util
 class SCIPException(Exception):
     pass
 
-RC = util.make_enum([
+ReturnCode = util.make_enum([
     'SCIP_OKAY',
     'SCIP_ERROR',
     'SCIP_NOMEMORY',
@@ -26,31 +26,32 @@ RC = util.make_enum([
     'SCIP_BRANCHERROR',
     ])
 
-_rc = {
-     1: RC.SCIP_OKAY,
-     0: RC.SCIP_ERROR,
-    -1: RC.SCIP_NOMEMORY,
-    -2: RC.SCIP_READERROR,
-    -3: RC.SCIP_WRITEERROR,
-    -4: RC.SCIP_NOFILE,
-    -5: RC.SCIP_FILECREATEERROR,
-    -6: RC.SCIP_LPERROR,
-    -7: RC.SCIP_NOPROBLEM,
-    -8: RC.SCIP_INVALIDCALL,
-    -9: RC.SCIP_INVALIDDATA,
-    10: RC.SCIP_INVALIDRESULT,
-    11: RC.SCIP_PLUGINNOTFOUND,
-    12: RC.SCIP_PARAMETERUNKNOWN,
-    13: RC.SCIP_PARAMETERWRONGTYPE,
-    14: RC.SCIP_PARAMETERWRONGVAL,
-    15: RC.SCIP_KEYALREADYEXISTING,
-    16: RC.SCIP_MAXDEPTHLEVEL,
-    17: RC.SCIP_BRANCHERROR,
+_rc_rev = {
+    lib.SCIP_OKAY: ReturnCode.SCIP_OKAY,
+    lib.SCIP_ERROR: ReturnCode.SCIP_ERROR,
+    lib.SCIP_NOMEMORY: ReturnCode.SCIP_NOMEMORY,
+    lib.SCIP_READERROR: ReturnCode.SCIP_READERROR,
+    lib.SCIP_WRITEERROR: ReturnCode.SCIP_WRITEERROR,
+    lib.SCIP_NOFILE: ReturnCode.SCIP_NOFILE,
+    lib.SCIP_FILECREATEERROR: ReturnCode.SCIP_FILECREATEERROR,
+    lib.SCIP_LPERROR: ReturnCode.SCIP_LPERROR,
+    lib.SCIP_NOPROBLEM: ReturnCode.SCIP_NOPROBLEM,
+    lib.SCIP_INVALIDCALL: ReturnCode.SCIP_INVALIDCALL,
+    lib.SCIP_INVALIDDATA: ReturnCode.SCIP_INVALIDDATA,
+    lib.SCIP_INVALIDRESULT: ReturnCode.SCIP_INVALIDRESULT,
+    lib.SCIP_PLUGINNOTFOUND: ReturnCode.SCIP_PLUGINNOTFOUND,
+    lib.SCIP_PARAMETERUNKNOWN: ReturnCode.SCIP_PARAMETERUNKNOWN,
+    lib.SCIP_PARAMETERWRONGTYPE: ReturnCode.SCIP_PARAMETERWRONGTYPE,
+    lib.SCIP_PARAMETERWRONGVAL: ReturnCode.SCIP_PARAMETERWRONGVAL,
+    lib.SCIP_KEYALREADYEXISTING: ReturnCode.SCIP_KEYALREADYEXISTING,
+    lib.SCIP_MAXDEPTHLEVEL: ReturnCode.SCIP_MAXDEPTHLEVEL,
+    lib.SCIP_BRANCHERROR: ReturnCode.SCIP_BRANCHERROR,
+    }
     }
 
 def _call(rc):
-    if rc != 1:
-        raise SCIPException('%s' % _rc[rc])
+    if rc != lib.SCIP_OKAY:
+        raise SCIPException('%s' % _rc_rev[rc])
     
 class SCIP:
     def __init__(self):
