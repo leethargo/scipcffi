@@ -47,12 +47,25 @@ _rc_rev = {
     lib.SCIP_MAXDEPTHLEVEL: ReturnCode.SCIP_MAXDEPTHLEVEL,
     lib.SCIP_BRANCHERROR: ReturnCode.SCIP_BRANCHERROR,
     }
+
+VarType = util.make_enum([
+    'BINARY',
+    'INTEGER',
+    'IMPLINT',
+    'CONTINUOUS',
+    ])
+
+_vt = {
+    VarType.BINARY: lib.SCIP_VARTYPE_BINARY,
+    VarType.INTEGER: lib.SCIP_VARTYPE_INTEGER,
+    VarType.IMPLINT: lib.SCIP_VARTYPE_IMPLINT,
+    VarType.CONTINUOUS: lib.SCIP_VARTYPE_CONTINUOUS,
     }
 
 def _call(rc):
     if rc != lib.SCIP_OKAY:
         raise SCIPException('%s' % _rc_rev[rc])
-    
+
 class SCIP:
     def __init__(self):
         # TODO: work without double ptr?
@@ -61,6 +74,29 @@ class SCIP:
         self._ptr = self._ptrptr[0]
         assert self._ptr != ffi.NULL
 
+        # always create a problem
+        name = 'anon'.encode('utf8')
+        _call(lib.SCIPcreateProbBasic(self._ptr, name))
+
     def __del__(self):
         _call(lib.SCIPfree(self._ptrptr))
 
+    def add_var(self, name, lb=0.0, ub=float('inf'), obj=0.0,
+                vartype=VarType.CONTINUOUS):
+        # TODO: work without double ptr
+        var_ptrptr = ffi.new('SCIP_VAR**')
+        _call(lib.SCIPcreateVarBasic(
+            self._ptr, var_ptrptr, name.encode('utf8'),
+            lb, ub, obj, _vt[vartype]))
+        return Var(self, var_ptrptr)
+
+class Var:
+    def __init__(self, scip, var_ptrptr):
+        self.scip = scip
+        self._ptrptr = var_ptrptr
+        self._ptr = self._ptrptr[0]
+        assert self._ptr != ffi.NULL
+        _call(lib.SCIPcaptureVar(self.scip._ptr, self._ptr))
+
+    def __del__(self):
+        _call(lib.SCIPreleaseVar(self.scip._ptr, self._ptrptr))
