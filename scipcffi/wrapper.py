@@ -139,6 +139,10 @@ class SCIP:
         _status = lib.SCIPgetStatus(self._ptr)
         return Status[_status]
 
+    def get_val(self, var):
+        return lib.SCIPgetSolVal(self._ptr, ffi.NULL, var._ptr)
+
+
 class Var:
     def __init__(self, scip, var_ptr):
         self._scip = scip

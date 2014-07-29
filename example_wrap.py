@@ -11,8 +11,12 @@ zz = scip.get_var('z')
 assert x == xx
 
 terms = [(x, 5), (y, 23)]
-cons = scip.add_cons('foo', terms, lhs=17)
+cons = scip.add_cons('foo', terms, lhs=25)
 
 status = scip.solve()
 assert status == Status.OPTIMAL
 
+_x = scip.get_val(x)
+_y = scip.get_val(y)
+
+print('x: %f, y: %f' % (_x, _y))
