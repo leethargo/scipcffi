@@ -102,6 +102,9 @@ SCIP_RETCODE SCIPaddCons(SCIP* scip, SCIP_CONS* cons);
 SCIP_RETCODE SCIPdelCons(SCIP* scip, SCIP_CONS* cons);
 SCIP_CONS* SCIPfindCons(SCIP* scip, const char* name);
 
+// from scipdefplugins.h
+SCIP_RETCODE SCIPincludeDefaultPlugins(SCIP* scip);
+
 // from cons_linear.h
 SCIP_RETCODE SCIPcreateConsBasicLinear(
     SCIP* scip,
@@ -117,6 +120,7 @@ SCIP_RETCODE SCIPcreateConsBasicLinear(
 
 _headers = '''
     #include <scip/scip.h>
+    #include <scip/scipdefplugins.h>
     #include <scip/cons_linear.h>
 '''
 

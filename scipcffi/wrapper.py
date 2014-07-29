@@ -74,6 +74,9 @@ class SCIP:
         self._ptr = self._ptrptr[0]
         assert self._ptr != ffi.NULL
 
+        # initialize, like in SCIPrunShell
+        _call(lib.SCIPincludeDefaultPlugins(self._ptr))
+
         # always create a problem
         name = 'anon'.encode('ascii')
         _call(lib.SCIPcreateProbBasic(self._ptr, name))
