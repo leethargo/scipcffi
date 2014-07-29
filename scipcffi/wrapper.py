@@ -117,6 +117,9 @@ class SCIP:
         _call(lib.SCIPaddCons(self._ptr, cons_ptr))
         return Cons(self, cons_ptr)
 
+    def solve(self):
+        _call(lib.SCIPsolve(self._ptr))
+
 
 class Var:
     def __init__(self, scip, var_ptr):
