@@ -75,7 +75,7 @@ class SCIP:
         assert self._ptr != ffi.NULL
 
         # always create a problem
-        name = 'anon'.encode('utf8')
+        name = 'anon'.encode('ascii')
         _call(lib.SCIPcreateProbBasic(self._ptr, name))
 
     def __del__(self):
@@ -87,19 +87,22 @@ class SCIP:
         # TODO: work without double ptr
         var_ptrptr = ffi.new('SCIP_VAR**')
         _call(lib.SCIPcreateVarBasic(
-            self._ptr, var_ptrptr, name.encode('utf8'),
+            self._ptr, var_ptrptr, name.encode('ascii'),
             lb, ub, obj, _vt[vartype]))
-        return Var(self, var_ptrptr)
+        var_ptr = var_ptrptr[0]
+        _call(lib.SCIPaddVar(self._ptr, var_ptr))
+        return Var(self, var_ptr)
+
+    def get_var(self, name):
+        var_ptr = lib.SCIPfindVar(self._ptr, name.encode('ascii'))
+        if var_ptr == ffi.NULL:
+            return None
+        else:
+            return Var(self, var_ptr)
+
 
 class Var:
-    def __init__(self, scip, var_ptrptr):
-        self.scip = scip
-        self._ptrptr = var_ptrptr
-        self._ptr = self._ptrptr[0]
+    def __init__(self, scip, var_ptr):
+        self._scip = scip
+        self._ptr = var_ptr
         assert self._ptr != ffi.NULL
-        _call(lib.SCIPcaptureVar(self.scip._ptr, self._ptr))
-
-    def __del__(self):
-        # TODO: is memory always freed?
-        if self.scip._ptr != ffi.NULL:
-            _call(lib.SCIPreleaseVar(self.scip._ptr, self._ptrptr))
