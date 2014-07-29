@@ -10,3 +10,5 @@ zz = scip.get_var('z')
 
 assert x == xx
 
+terms = [(x, 5.0), (y, -23.0)]
+cons = scip.add_cons('foo', terms)

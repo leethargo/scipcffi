@@ -93,6 +93,7 @@ class SCIP:
             self._ptr, var_ptrptr, name.encode('ascii'),
             lb, ub, obj, _vt[vartype]))
         var_ptr = var_ptrptr[0]
+        assert var_ptr != ffi.NULL
         _call(lib.SCIPaddVar(self._ptr, var_ptr))
         return Var(self, var_ptr)
 
@@ -103,6 +104,19 @@ class SCIP:
         else:
             return Var(self, var_ptr)
 
+    def add_cons(self, name, terms, lhs=0.0, rhs=float('inf')):
+        # TODO: work without double ptr
+        cons_ptrptr = ffi.new('SCIP_CONS**')
+        vars = ffi.new('SCIP_VAR*[]', [v._ptr for (v,c) in terms])
+        vals = ffi.new('SCIP_Real[]', [c for (v,c) in terms])
+        _call(lib.SCIPcreateConsBasicLinear(
+            self._ptr, cons_ptrptr, name.encode('ascii'),
+            len(terms), vars, vals, lhs, rhs))
+        cons_ptr = cons_ptrptr[0]
+        assert cons_ptr != ffi.NULL
+        _call(lib.SCIPaddCons(self._ptr, cons_ptr))
+        return Cons(self, cons_ptr)
+
 
 class Var:
     def __init__(self, scip, var_ptr):
@@ -112,3 +126,13 @@ class Var:
 
     def __eq__(self, other):
         return isinstance(other, Var) and self._ptr == other._ptr
+
+
+class Cons:
+    def __init__(self, scip, cons_ptr):
+        self._scip = scip
+        self._ptr = cons_ptr
+        assert self._ptr != ffi.NULL
+
+    def __eq__(self, other):
+        return isinstance(other, Cons) and self._ptr == other._ptr
