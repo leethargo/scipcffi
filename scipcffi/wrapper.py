@@ -152,6 +152,10 @@ class Var:
     def __eq__(self, other):
         return isinstance(other, Var) and self._ptr == other._ptr
 
+    @property
+    def val(self):
+        return self._scip.get_val(self)
+
 
 class Cons:
     def __init__(self, scip, cons_ptr):

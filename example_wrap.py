@@ -20,3 +20,6 @@ _x = scip.get_val(x)
 _y = scip.get_val(y)
 
 print('x: %f, y: %f' % (_x, _y))
+
+assert x.val == _x
+assert y.val == _y
