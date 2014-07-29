@@ -106,3 +106,6 @@ class Var:
         self._scip = scip
         self._ptr = var_ptr
         assert self._ptr != ffi.NULL
+
+    def __eq__(self, other):
+        return isinstance(other, Var) and self._ptr == other._ptr
