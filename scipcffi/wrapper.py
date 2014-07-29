@@ -80,6 +80,7 @@ class SCIP:
 
     def __del__(self):
         _call(lib.SCIPfree(self._ptrptr))
+        self._ptr = ffi.NULL
 
     def add_var(self, name, lb=0.0, ub=float('inf'), obj=0.0,
                 vartype=VarType.CONTINUOUS):
@@ -99,4 +100,6 @@ class Var:
         _call(lib.SCIPcaptureVar(self.scip._ptr, self._ptr))
 
     def __del__(self):
-        _call(lib.SCIPreleaseVar(self.scip._ptr, self._ptrptr))
+        # TODO: is memory always freed?
+        if self.scip._ptr != ffi.NULL:
+            _call(lib.SCIPreleaseVar(self.scip._ptr, self._ptrptr))
