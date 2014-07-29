@@ -23,3 +23,5 @@ print('x: %f, y: %f' % (_x, _y))
 
 assert x.val == _x
 assert y.val == _y
+
+print(str(x))

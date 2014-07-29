@@ -116,6 +116,8 @@ SCIP_RETCODE SCIPcreateConsBasicLinear(
     SCIP_Real lhs,
     SCIP_Real rhs);
 
+// from pub_var.h
+char* SCIPvarGetName(SCIP_VAR* var);
 '''
 
 _headers = '''
