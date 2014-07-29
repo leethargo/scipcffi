@@ -1,4 +1,4 @@
-from scipcffi import SCIP
+from scipcffi import SCIP, Status
 
 scip = SCIP()
 
@@ -13,4 +13,6 @@ assert x == xx
 terms = [(x, 5), (y, 23)]
 cons = scip.add_cons('foo', terms, lhs=17)
 
-scip.solve()
+status = scip.solve()
+assert status == Status.OPTIMAL
+

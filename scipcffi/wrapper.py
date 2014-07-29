@@ -48,6 +48,23 @@ _rc_rev = {
     lib.SCIP_BRANCHERROR: ReturnCode.SCIP_BRANCHERROR,
     }
 
+Status = util.make_enum([
+    'UNKNOWN',
+    'USERINTERRUPT',
+    'NODELIMIT',
+    'TOTALNODELIMIT',
+    'STALLNODELIMIT',
+    'TIMELIMIT',
+    'MEMLIMIT',
+    'GAPLIMIT',
+    'SOLLIMIT',
+    'BESTSOLLIMIT',
+    'OPTIMAL',
+    'INFEASIBLE',
+    'UNBOUNDED',
+    'INFORUNBD',
+    ])
+
 VarType = util.make_enum([
     'BINARY',
     'INTEGER',
@@ -119,7 +136,8 @@ class SCIP:
 
     def solve(self):
         _call(lib.SCIPsolve(self._ptr))
-
+        _status = lib.SCIPgetStatus(self._ptr)
+        return Status[_status]
 
 class Var:
     def __init__(self, scip, var_ptr):
