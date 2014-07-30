@@ -1,2 +1,19 @@
 * Python wrapper for SCIP using cffi
 built up step by step following [[http://cffi.readthedocs.org]].
+** goals
+   - easy to use interface to the SCIP solver
+   - convenient and (pre-compiled) cross-platform packaging
+   - prototyping of algorithms via SCIP plugins implemented in Python
+   - make available SCIP features beyond MIP
+     - global optimality of NLP, MINLP
+     - (general) constraint programming
+** maybe goals
+   - interactive work (there is already the SCIP shell itself)
+** non-goals
+   - don't provide advanced modelling features
+     - there's already packages like [[http://www.coin-or.org/PuLP/][PuLP]] or [[http://picos.zib.de/][PICOS]]
+     - they can later interface this code
+* dependencies
+  - [[http://cffi.readthedocs.org][cffi]]
+  - [[http://pytest.org/latest/][pytest]]
+  - [[http://sympy.org/en/index.html][sympy]] (for nonlinear constraints)
