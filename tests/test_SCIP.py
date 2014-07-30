@@ -1,7 +1,7 @@
 import pytest
 
 from scipcffi import SCIP, Status
-
+from scipcffi.util import eq_float
 
 def test_created_and_delete():
     '''SCIP solvers can be created and deleted'''
@@ -34,5 +34,5 @@ def test_solve():
     assert status == Status.OPTIMAL
 
     # compare (unique) values from optimal solution
-    assert x.val == 1.0
-    assert y.val == 0.0
+    assert eq_float(x.val, 1.0)
+    assert eq_float(y.val, 0.0)
