@@ -1,5 +1,5 @@
 from scipcffi.ffi import ffi, lib
-from scipcffi.types import Status, VarType
+from scipcffi.types import SCIPException, Status, VarType
 
 CODEC = 'ascii'
 
