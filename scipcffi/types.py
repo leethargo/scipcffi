@@ -62,3 +62,9 @@ VarType = make_enum([
     'IMPLINT',
     'CONTINUOUS',
 ], prefix='SCIP_VARTYPE_')
+
+
+ObjSense = make_enum([
+    'MAXIMIZE',
+    'MINIMIZE',
+], prefix='SCIP_OBJSENSE_')
