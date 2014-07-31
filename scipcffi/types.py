@@ -7,55 +7,35 @@ class SCIPException(Exception):
     pass
 
 
-def make_enum(items):
+def make_enum(items, prefix=''):
     class Enum(namedtuple('enum', items)):
-        pass
+        to_scip = {i:getattr(lib, prefix + i)  for i in items}
+        from_scip = {getattr(lib, prefix + i):i  for i in items}
+
     return Enum._make(items)
 
 
 ReturnCode = make_enum([
-    'SCIP_OKAY',
-    'SCIP_ERROR',
-    'SCIP_NOMEMORY',
-    'SCIP_READERROR',
-    'SCIP_WRITEERROR',
-    'SCIP_NOFILE',
-    'SCIP_FILECREATEERROR',
-    'SCIP_LPERROR',
-    'SCIP_NOPROBLEM',
-    'SCIP_INVALIDCALL',
-    'SCIP_INVALIDDATA',
-    'SCIP_INVALIDRESULT',
-    'SCIP_PLUGINNOTFOUND',
-    'SCIP_PARAMETERUNKNOWN',
-    'SCIP_PARAMETERWRONGTYPE',
-    'SCIP_PARAMETERWRONGVAL',
-    'SCIP_KEYALREADYEXISTING',
-    'SCIP_MAXDEPTHLEVEL',
-    'SCIP_BRANCHERROR',
-])
-
-ReturnCode.from_scip = {
-    lib.SCIP_OKAY: ReturnCode.SCIP_OKAY,
-    lib.SCIP_ERROR: ReturnCode.SCIP_ERROR,
-    lib.SCIP_NOMEMORY: ReturnCode.SCIP_NOMEMORY,
-    lib.SCIP_READERROR: ReturnCode.SCIP_READERROR,
-    lib.SCIP_WRITEERROR: ReturnCode.SCIP_WRITEERROR,
-    lib.SCIP_NOFILE: ReturnCode.SCIP_NOFILE,
-    lib.SCIP_FILECREATEERROR: ReturnCode.SCIP_FILECREATEERROR,
-    lib.SCIP_LPERROR: ReturnCode.SCIP_LPERROR,
-    lib.SCIP_NOPROBLEM: ReturnCode.SCIP_NOPROBLEM,
-    lib.SCIP_INVALIDCALL: ReturnCode.SCIP_INVALIDCALL,
-    lib.SCIP_INVALIDDATA: ReturnCode.SCIP_INVALIDDATA,
-    lib.SCIP_INVALIDRESULT: ReturnCode.SCIP_INVALIDRESULT,
-    lib.SCIP_PLUGINNOTFOUND: ReturnCode.SCIP_PLUGINNOTFOUND,
-    lib.SCIP_PARAMETERUNKNOWN: ReturnCode.SCIP_PARAMETERUNKNOWN,
-    lib.SCIP_PARAMETERWRONGTYPE: ReturnCode.SCIP_PARAMETERWRONGTYPE,
-    lib.SCIP_PARAMETERWRONGVAL: ReturnCode.SCIP_PARAMETERWRONGVAL,
-    lib.SCIP_KEYALREADYEXISTING: ReturnCode.SCIP_KEYALREADYEXISTING,
-    lib.SCIP_MAXDEPTHLEVEL: ReturnCode.SCIP_MAXDEPTHLEVEL,
-    lib.SCIP_BRANCHERROR: ReturnCode.SCIP_BRANCHERROR,
-}
+    'OKAY',
+    'ERROR',
+    'NOMEMORY',
+    'READERROR',
+    'WRITEERROR',
+    'NOFILE',
+    'FILECREATEERROR',
+    'LPERROR',
+    'NOPROBLEM',
+    'INVALIDCALL',
+    'INVALIDDATA',
+    'INVALIDRESULT',
+    'PLUGINNOTFOUND',
+    'PARAMETERUNKNOWN',
+    'PARAMETERWRONGTYPE',
+    'PARAMETERWRONGVAL',
+    'KEYALREADYEXISTING',
+    'MAXDEPTHLEVEL',
+    'BRANCHERROR',
+], prefix='SCIP_')
 
 
 Status = make_enum([
@@ -73,7 +53,7 @@ Status = make_enum([
     'INFEASIBLE',
     'UNBOUNDED',
     'INFORUNBD',
-])
+], prefix='SCIP_STATUS_')
 
 
 VarType = make_enum([
@@ -81,11 +61,4 @@ VarType = make_enum([
     'INTEGER',
     'IMPLINT',
     'CONTINUOUS',
-])
-
-VarType.to_scip = {
-    VarType.BINARY: lib.SCIP_VARTYPE_BINARY,
-    VarType.INTEGER: lib.SCIP_VARTYPE_INTEGER,
-    VarType.IMPLINT: lib.SCIP_VARTYPE_IMPLINT,
-    VarType.CONTINUOUS: lib.SCIP_VARTYPE_CONTINUOUS,
-}
+], prefix='SCIP_VARTYPE_')

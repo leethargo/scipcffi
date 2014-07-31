@@ -62,7 +62,7 @@ class SCIP:
     def solve(self):
         _call(lib.SCIPsolve(self._ptr))
         _status = lib.SCIPgetStatus(self._ptr)
-        return Status[_status]
+        return Status.from_scip[_status]
 
     def get_val(self, var):
         return lib.SCIPgetSolVal(self._ptr, ffi.NULL, var._ptr)
