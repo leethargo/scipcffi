@@ -1,9 +1,4 @@
-from collections import namedtuple
-
 TOL = 1e-6
-
-def make_enum(items):
-    return namedtuple('enum', items)._make(items)
 
 def eq_float(x, y):
     return abs(x - y) <= TOL
