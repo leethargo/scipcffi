@@ -1,5 +1,5 @@
-Please note that work on this project is discontinued in favor of the
-[[http://cython.org][Cython]] based interface that is shipped with the [[http://scip.zib.de][SCIP sources]].
+Please note that work on this project is discontinued in favor of the [[https://github.com/SCIP-Interfaces/PySCIPOpt][PySCIPOpt]]
+project based on [[http://cython.org/][Cython]].
 
 * Python wrapper for SCIP using cffi
 built up step by step following [[http://cffi.readthedocs.org]].
